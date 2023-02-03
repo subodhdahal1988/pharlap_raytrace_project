@@ -28,7 +28,7 @@ for timecount=1:length(date_matrix)
             % call raytrace
             %
             fr=10;
-            bearing_angle=78:0.01:79;
+            bearing_angle=79.01:0.01:80;
             %bearing_angle=77:0.05:77.95;
             %bearing_angle=78:0.05:80;
             elevs = 3:0.1:90;
@@ -177,7 +177,7 @@ end
 clear
 wgs84 = wgs84Ellipsoid;
 %bearing_angle=77:0.05:77.95;
-bearing_angle=74:0.05:80;
+bearing_angle=78:0.01:79;
 fr=10;   % frequency (MHz)
 rec_lat=40+44/60+30/3600;
 rec_lon=-(74+10/60+43/3600);
@@ -206,7 +206,7 @@ for timecount=1:length(month_matrix)
             minute=minutes_matrix(min);
             hour=hour_matrix(hor);
             for bearnumber=1:length(bearing_angle)
-                filename=['D:\projectnew\ionodata5\raydata_',num2str(fr),'_',num2str(bearing_angle(bearnumber)),'_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'];
+                filename=['D:\projectnew\pharlap_raytrace_project\local_data\raydata_',num2str(fr),'_',num2str(bearing_angle(bearnumber)),'_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'];
                 load(filename);
                 i=1;
                 m=1;
@@ -220,18 +220,19 @@ for timecount=1:length(month_matrix)
     
                             i=i+1;
                       end
-                      if ray_X_final(elevsnum).lable(end)==1
+                      if ray_X_final(elevsnum).label(end)==1
                           ray_X_select(m).lat=ray_X_final(elevsnum).lat(end);
                           ray_X_select(m).lon=ray_X_final(elevsnum).lon(end);
                           ray_X_select(m).phase_path=ray_X_final(elevsnum).phase_path(end);
                           m=m+1;
                       end
                 end
+                save(['D:\projectnew\pharlap_raytrace_project\local_data\received_ray_information','_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'],'ray_O_select','ray_X_select');
             end
         end
        
      end
-      save(['D:\projectnew\pharlap_raytrace_project\local_data\received_ray_information','_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'],'ray_O_select','ray_X_select');
+%       save(['D:\projectnew\pharlap_raytrace_project\local_data\received_ray_information','_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'],'ray_O_select','ray_X_select');
 end
 
 %                         [bearing,elev,slantRange] = geodetic2aer(lat_land,lon_land,h,rec_lat,rec_lon,h,wgs84);
@@ -293,18 +294,247 @@ end
 %      
 %    
 %%
+clear
 lat0=40.7423;
 lon0=-74.1793;
-for e=1:length(ray_X_select);
-    X_lat(e)=ray_X_select(e).lat;
-    X_lot(e)=ray_X_select(e).lon;
-end
+%lat0=40+44/60+30/3600;
+%lon0=-(74+10/60+43/3600);
+h=0;
 
-for f=1:length(ray_O_select);
-    O_lat(f)=ray_O_select(f).lat;
-    O_lot(f)=ray_O_select(f).lon;
-end
+wgs84 = wgs84Ellipsoid;
+month_matrix=[3];
+date_matrix=[20];
+minute_mat=0:10:59;
+hor_mat=0:1:23;
 
+ray_O_received_lowestdistance=struct('lat',[],'lon',[],'ground_range',[],'phase_path',[],'slantrange',[]);
+ray_X_received_lowestdistance=struct('lat',[],'lon',[],'ground_range',[],'phase_path',[],'slantrange',[]);
+i=1;
+m=1;
+for timecount=1:length(month_matrix)
+    for l=1:length(hor_mat)
+        for j=1:length(minute_mat)
+            date=date_matrix(timecount);
+            month=month_matrix(timecount);
+            hour=hor_mat(l);
+            minute=minute_mat(j);
+            filename=['D:\projectnew\pharlap_raytrace_project\local_data\received_ray_information','_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'];
+            load(filename);
+            
+            for num1=1:length(ray_O_select)
+                
+                    
+                    lat_land=ray_O_select(num1).lat;
+                    lon_land=ray_O_select(num1).lon;
+                    
+                    [az,elev,slantRange_O]=geodetic2aer(lat_land,lon_land,h,lat0,lon0,h,wgs84);
+
+                    ray_O_received_lowestdistance(num1).lat=ray_O_select(num1).lat;
+                    ray_O_received_lowestdistance(num1).lon=ray_O_select(num1).lon;
+
+                    ray_O_received_lowestdistance(num1).phase_path=ray_O_select(num1).phase_path;
+                    ray_O_received_lowestdistance(num1).slantrange=slantRange_O;
+
+%                     ray_O_received_lowestdistance(i).month=month;
+%                     ray_O_received_lowestdistance(i).date=date;
+%                     ray_O_received_lowestdistance(i).hour=hour;
+%                     ray_O_received_lowestdistance(i).minute=minute;
+%                     
+                    i=i+1;
+        
+            end
+
+   
+           
+            
+
+             for num2=1:length(ray_X_select)
+                   
+                    lat_land_X=ray_X_select(num2).lat;
+                    lon_land_X=ray_X_select(num2).lon;
+                    [slantRange_X]=geodetic2aer(lat_land_X,lon_land_X,h,lat0,lon0,h,wgs84);
+                    
+
+
+                    
+
+                    ray_X_received_lowestdistance(num2).lat=ray_X_select(num2).lat;
+                    ray_X_received_lowestdistance(num2).lon=ray_X_select(num2).lon;
+                    
+                    ray_X_received_lowestdistance(num2).phase_path=ray_X_select(num2).phase_path;
+                    ray_X_received_lowestdistance(num2).slantrange=slantRange_X;
+                    
+%                     ray_X_received_lowestdistance(m).month=month;
+%                     ray_X_received_lowestdistance(m).date=date;
+%                     ray_X_received_lowestdistance(m).hour=hour;
+%                     ray_X_received_lowestdistance(m).minute=minute;
+                    m=m+1;
+             end
+             save(['D:\projectnew\pharlap_raytrace_project\local_data\received_ray_closetoreciever','_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'],'ray_X_received_lowestdistance','ray_O_received_lowestdistance')
+
+                    
+        end
+% %         save(['D:\projectnew\pharlap_raytrace_project\local_data\received_ray_closetoreciever','_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'],'ray_X_received_lowestdistance','ray_O_received_lowestdistance')
+       
+    end
+    
+end
+%%
+clear
+lat0=40.7423;
+lon0=-74.1793;
+%lat0=40+44/60+30/3600;
+%lon0=-(74+10/60+43/3600);
+h=0;
+
+wgs84 = wgs84Ellipsoid;
+month_matrix=[3];
+date_matrix=[20];
+minute_mat=0:10:59;
+hor_mat=0:1:23;
+
+ray_O_received_njit=struct('lat',[],'lon',[],'ground_range',[],'phase_path',[],'slantrange',[]);
+ray_X_received_njit=struct('lat',[],'lon',[],'ground_range',[],'phase_path',[],'slantrange',[]);
+i=1;
+m=1;
+for timecount=1:length(month_matrix)
+    for l=1:length(hor_mat)
+        for j=1:length(minute_mat)
+            date=date_matrix(timecount);
+            month=month_matrix(timecount);
+            hour=hor_mat(l);
+            minute=minute_mat(j);
+            filename=['D:\projectnew\pharlap_raytrace_project\local_data\received_ray_closetoreciever','_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'];
+            load(filename);
+
+
+            for num1=1:length(ray_O_received_lowestdistance)
+                    n1(num1)=ray_O_received_lowestdistance(num1).slantrange;
+            end
+                    position=find(n1==min(n1));
+            
+                    ray_O_received_njit(i).lat=ray_O_received_lowestdistance(position).lat;
+                    ray_O_received_njit(i).lon=ray_O_received_lowestdistance(position).lon;
+
+                    ray_O_received_njit(i).phase_path=ray_O_received_lowestdistance(position).phase_path;
+                   
+
+                    ray_O_received_njit(i).month=month;
+                    ray_O_received_njit(i).date=date;
+                    ray_O_received_njit(i).hour=hour;
+                    ray_O_received_njit(i).minute=minute;
+%                     
+                    i=i+1;
+        
+            
+
+
+             for num2=1:length(ray_X_received_lowestdistance)
+                   
+                    n2(num2)=ray_X_received_lowestdistance(num2).slantrange;
+             end
+                    
+                    position_x=find(n2==min(n2));
+                  
+
+                    ray_X_received_njit(m).lat=ray_X_received_lowestdistance(position_x).lat;
+                    ray_X_received_njit(m).lon=ray_X_received_lowestdistance(position_x).lon;
+                    
+                    ray_X_received_njit(m).phase_path=ray_X_received_lowestdistance(position_x).phase_path;
+                   
+                    
+                    ray_X_received_njit(m).month=month;
+                    ray_X_received_njit(m).date=date;
+                    ray_X_received_njit(m).hour=hour;
+                    ray_X_received_njit(m).minute=minute;
+                    m=m+1;
+        end
+    end
+    save(['D:\projectnew\pharlap_raytrace_project\local_data\landedray_njit','_',num2str(month),'_',num2str(date),'.mat'],'ray_X_received_njit','ray_O_received_njit')
+end
+ %%
+ clear
+ load('D:\projectnew\pharlap_raytrace_project\local_data\landedray_njit_3_20.mat')
+s=1;
+for i1=1:length(ray_O_received_njit)
+        time_year(i1)=2018;
+        time_month(i1)=ray_O_received_njit(i1).month(1);
+        time_day(i1)=ray_O_received_njit(i1).date(1);
+        time_hour(i1)=ray_O_received_njit(i1).hour(1);
+        time_minute(i1)=ray_O_received_njit(i1).minute(1);
+        time_second(i1)=00;
+   
+        now=[time_year(i1),time_month(i1),time_day(i1),time_hour(i1),time_minute(i1),time_second(i1)];
+        ray_O_received_njit(i1).time=now;
+        %UT1(i)=datetime(ray_O_received_lowestdistance(i).time);
+         ray_O_received_njit(s).UT=datetime(ray_O_received_njit(i1).time);
+         ray_X_received_njit(s).UT=datetime(ray_O_received_njit(i1).time);
+         s=s+1;
+end
+                   
+
+ %%
+%lat vs lon plot (for O ray)
+
+for e=1:length(ray_X_received_njit)
+    
+    timo(e)=ray_O_received_njit(e).UT;
+    O_lat(e)=ray_O_received_njit(e).lat;
+    O_lot(e)=ray_O_received_njit(e).lon;
+
+    yyaxis left
+    plot(timo,O_lat,'color','b','Marker','o');
+    ylabel('latitude')
+
+    hold on
+    yyaxis right                
+    plot(timo,O_lot,'color','r','Marker','x');
+
+
+
+
+    e=e+1;
+    xlabel('UT')
+    ylabel('longitude')
+    
+
+    title('latitude vs longitude for O-rays landed closest NJIT(2018-03-20)')
+    
+end
+   
+
+             
+ %%
+%lat vs lon plot (for O ray)
+
+for e=1:length(ray_X_received_njit)
+    
+    timx(e)=ray_X_received_njit(e).UT;
+    X_lat(e)=ray_X_received_njit(e).lat;
+    X_lot(e)=ray_X_received_njit(e).lon;
+
+    yyaxis left
+    plot(timx,X_lat,'color','b','Marker','o');
+    ylabel('latitude')
+
+    hold on
+    yyaxis right                
+    plot(timx,X_lot,'color','r','Marker','x');
+
+
+
+
+    e=e+1;
+    xlabel('UT')
+    ylabel('longitude')
+    
+
+    title('latitude vs longitude for X-rays landed closest NJIT(2018-03-20)')
+    
+end
+%%
+lat0=40.7423;
+lon0=-74.1793;
 geoplot(X_lat,X_lot,"om",MarkerFaceColor="auto",Marker="*",MarkerSize=15)
 hold on
 geoplot(O_lat,O_lot,"om",MarkerFaceColor="auto",Marker=".",MarkerSize=15)
@@ -312,3 +542,60 @@ hold on
 geoplot(lat0,lon0,"om",Marker="diamond",MarkerSize=20,MarkerFaceColor="auto")
 
 legend("x-ray","o-ray","NJIT")
+%%
+%phase path plot
+
+
+for pc=1:length(ray_X_received_njit);
+    
+    tim(pc)=ray_O_received_njit(pc).UT;
+    phasepath_0(pc)=ray_O_received_njit(pc).phase_path;
+    phasepath_1(pc)=ray_X_received_njit(pc).phase_path;
+
+
+    
+end
+%%
+%filter plot
+
+    order = 3;
+    framelen = 21;
+
+    filt_O=sgolayfilt(phasepath_0,order,framelen);
+    filt_X=sgolayfilt(phasepath_1,order,framelen);
+
+
+    plot(tim,phasepath_0,'color','r','Marker','.');
+
+    hold on
+    plot(tim,filt_O,'color','black','Marker','+','LineWidth',2);
+    hold on
+
+    plot(tim,phasepath_1,'color','b','Marker','x');
+
+    hold on
+    plot(tim,filt_X,'color','cyan','Marker','^','LineWidth',2);
+
+
+
+  
+    
+
+
+      xlabel('UT')
+      ylabel('Phase path(Km)')
+
+
+
+      ax = gca;
+      ax.XGrid = 'on';
+      ax.YGrid = 'off';
+
+    %       %xlim(0,25)
+    %  
+      title('phase path of X and O Rays received at NJIT(2018-03-20)')
+     legend('O-ray','fit_O','X-ray','fit_X','Location','bestoutside')
+%%
+        
+    
+   
