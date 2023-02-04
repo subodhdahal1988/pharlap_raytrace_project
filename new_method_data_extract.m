@@ -28,7 +28,7 @@ for timecount=1:length(date_matrix)
             % call raytrace
             %
             fr=10;
-            bearing_angle=79.01:0.01:80;
+            bearing_angle=78:0.01:80;
             %bearing_angle=77:0.05:77.95;
             %bearing_angle=78:0.05:80;
             elevs = 3:0.1:90;
@@ -177,7 +177,7 @@ end
 clear
 wgs84 = wgs84Ellipsoid;
 %bearing_angle=77:0.05:77.95;
-bearing_angle=78:0.01:79;
+bearing_angle=78:0.01:80;
 fr=10;   % frequency (MHz)
 rec_lat=40+44/60+30/3600;
 rec_lon=-(74+10/60+43/3600);
@@ -295,8 +295,8 @@ end
 %    
 %%
 clear
-lat0=40.7423;
-lon0=-74.1793;
+lat0=40.7417;
+lon0=-74.1786;
 %lat0=40+44/60+30/3600;
 %lon0=-(74+10/60+43/3600);
 h=0;
@@ -381,8 +381,8 @@ for timecount=1:length(month_matrix)
 end
 %%
 clear
-lat0=40.7423;
-lon0=-74.1793;
+lat0=40.7417;
+lon0=-74.1786;
 %lat0=40+44/60+30/3600;
 %lon0=-(74+10/60+43/3600);
 h=0;
@@ -533,8 +533,8 @@ for e=1:length(ray_X_received_njit)
     
 end
 %%
-lat0=40.7423;
-lon0=-74.1793;
+lat0=40.7417;
+lon0=-74.1786;
 geoplot(X_lat,X_lot,"om",MarkerFaceColor="auto",Marker="*",MarkerSize=15)
 hold on
 geoplot(O_lat,O_lot,"om",MarkerFaceColor="auto",Marker=".",MarkerSize=15)
