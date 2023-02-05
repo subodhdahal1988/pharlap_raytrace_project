@@ -172,7 +172,7 @@ for timecount=1:length(date_matrix)
         end
     end
 end
-%%
+%% collecting data of ray received 
 
 clear
 wgs84 = wgs84Ellipsoid;
@@ -293,7 +293,7 @@ end
 %            
 %      
 %    
-%%
+%% finding slant range of ray landed from NJIT
 clear
 lat0=40.7417;
 lon0=-74.1786;
@@ -352,7 +352,7 @@ for timecount=1:length(month_matrix)
                    
                     lat_land_X=ray_X_select(num2).lat;
                     lon_land_X=ray_X_select(num2).lon;
-                    [slantRange_X]=geodetic2aer(lat_land_X,lon_land_X,h,lat0,lon0,h,wgs84);
+                    [az,elev,slantRange_X]=geodetic2aer(lat_land_X,lon_land_X,h,lat0,lon0,h,wgs84);
                     
 
 
@@ -379,7 +379,7 @@ for timecount=1:length(month_matrix)
     end
     
 end
-%%
+%% finding O and X ray landed near NJIT
 clear
 lat0=40.7417;
 lon0=-74.1786;
@@ -452,7 +452,7 @@ for timecount=1:length(month_matrix)
     end
     save(['D:\projectnew\pharlap_raytrace_project\local_data\landedray_njit','_',num2str(month),'_',num2str(date),'.mat'],'ray_X_received_njit','ray_O_received_njit')
 end
- %%
+ %% time calculation
  clear
  load('D:\projectnew\pharlap_raytrace_project\local_data\landedray_njit_3_20.mat')
 s=1;
@@ -505,7 +505,7 @@ end
 
              
  %%
-%lat vs lon plot (for O ray)
+%lat vs lon plot (for X ray)
 
 for e=1:length(ray_X_received_njit)
     
@@ -532,7 +532,7 @@ for e=1:length(ray_X_received_njit)
     title('latitude vs longitude for X-rays landed closest NJIT(2018-03-20)')
     
 end
-%%
+%% geographic plot
 lat0=40.7417;
 lon0=-74.1786;
 geoplot(X_lat,X_lot,"om",MarkerFaceColor="auto",Marker="*",MarkerSize=15)
