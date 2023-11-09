@@ -15,7 +15,7 @@ for timecount=1:length(date_matrix)
             month=month_matrix(timecount);
             minute=minutes_matrix(min);
             hour=hour_matrix(hor);
-            load(['D:\projectnew\ionodata5\WWV_ionosphere_','Mar','_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat']);
+            load(['E:\projectnew\ionodata5\WWV_ionosphere_','Mar','_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat']);
            
             
             % convert plasma frequency grid to  electron density in electrons/cm^3
@@ -164,7 +164,7 @@ for timecount=1:length(date_matrix)
                     ray_X_final(i).TEC_path=ray_data_X(i).TEC_path;
 %                     ray_X_final(i).electron_density=ray_X(i).electron_density;
                 end
-                filename=['D:\projectnew\pharlap_raytrace_project\local_data\raydata_',num2str(fr),'_',num2str(bearing_angle(bearnumber)),'_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'];
+                filename=['E:\projectnew\pharlap_raytrace_project\local_data\raydata_',num2str(fr),'_',num2str(bearing_angle(bearnumber)),'_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'];
                 save(filename,'ray_O_final','ray_X_final');%save the raydata
 
                 toc
@@ -206,7 +206,7 @@ for timecount=1:length(month_matrix)
             minute=minutes_matrix(min);
             hour=hour_matrix(hor);
             for bearnumber=1:length(bearing_angle)
-                filename=['D:\projectnew\pharlap_raytrace_project\local_data\raydata_',num2str(fr),'_',num2str(bearing_angle(bearnumber)),'_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'];
+                filename=['E:\projectnew\pharlap_raytrace_project\local_data\raydata_',num2str(fr),'_',num2str(bearing_angle(bearnumber)),'_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'];
                 load(filename);
                 i=1;
                 m=1;
@@ -227,7 +227,7 @@ for timecount=1:length(month_matrix)
                           m=m+1;
                       end
                 end
-                save(['D:\projectnew\pharlap_raytrace_project\local_data\received_ray_information','_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'],'ray_O_select','ray_X_select');
+                save(['E:\projectnew\pharlap_raytrace_project\local_data\received_ray_information','_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'],'ray_O_select','ray_X_select');
             end
         end
        
@@ -318,7 +318,7 @@ for timecount=1:length(month_matrix)
             month=month_matrix(timecount);
             hour=hor_mat(l);
             minute=minute_mat(j);
-            filename=['D:\projectnew\pharlap_raytrace_project\local_data\received_ray_information','_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'];
+            filename=['E:\projectnew\pharlap_raytrace_project\local_data\received_ray_information','_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'];
             load(filename);
             
             for num1=1:length(ray_O_select)
@@ -370,7 +370,7 @@ for timecount=1:length(month_matrix)
 %                     ray_X_received_lowestdistance(m).minute=minute;
                     m=m+1;
              end
-             save(['D:\projectnew\pharlap_raytrace_project\local_data\received_ray_closetoreciever','_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'],'ray_X_received_lowestdistance','ray_O_received_lowestdistance')
+             save(['E:\projectnew\pharlap_raytrace_project\local_data\received_ray_closetoreciever','_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'],'ray_X_received_lowestdistance','ray_O_received_lowestdistance')
 
                     
         end
@@ -404,7 +404,7 @@ for timecount=1:length(month_matrix)
             month=month_matrix(timecount);
             hour=hor_mat(l);
             minute=minute_mat(j);
-            filename=['D:\projectnew\pharlap_raytrace_project\local_data\received_ray_closetoreciever','_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'];
+            filename=['E:\projectnew\pharlap_raytrace_project\local_data\received_ray_closetoreciever','_',num2str(month),'_',num2str(date),'_',num2str(hour),'_',num2str(minute),'.mat'];
             load(filename);
 
 
@@ -450,11 +450,11 @@ for timecount=1:length(month_matrix)
                     m=m+1;
         end
     end
-    save(['D:\projectnew\pharlap_raytrace_project\local_data\landedray_njit','_',num2str(month),'_',num2str(date),'.mat'],'ray_X_received_njit','ray_O_received_njit')
+    save(['E:\projectnew\pharlap_raytrace_project\local_data\landedray_njit','_',num2str(month),'_',num2str(date),'.mat'],'ray_X_received_njit','ray_O_received_njit')
 end
  %% time calculation
  clear
- load('D:\projectnew\pharlap_raytrace_project\local_data\landedray_njit_3_20.mat')
+ load('E:\projectnew\pharlap_raytrace_project\local_data\landedray_njit_3_20.mat')
 s=1;
 for i1=1:length(ray_O_received_njit)
         time_year(i1)=2018;
